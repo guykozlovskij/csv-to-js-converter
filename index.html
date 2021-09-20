@@ -1,55 +1,57 @@
-<head></head>
 <body>
-  <form id="myForm">
+  <form id="csvForm">
     <input type="file" id="csvFile" accept=".csv" />
-    <br />
-    <br >
     <input type="submit" value="Submit" />
   </form>
-  <script>
-    const myForm = document.getElementById("myForm")
-    const csvFile = document.getElementById("csvFile")
-  
-    myForm.addEventListener("submit", function (e) {
-      e.preventDefault()
-      alert("File Submitted")
 
-      const input = csvFile.files[0]
-      const reader = new FileReader()
-  
-      reader.onload = function (e) {
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    input {
+      font-size: large;
+    }
+  </style>
+
+  <script>
+    const csvForm = document.getElementById("csvForm")
+    const csvFile = document.getElementById("csvFile")
+
+    csvForm.addEventListener("submit", (e) => {
+      e.preventDefault()
+      alert("File submitted. Open Console.")
+
+      const submittedFile = csvFile.files[0]
+      const reader = new FileReader() // JS class for reading files 
+
+      reader.onload = (e) => {
         const text = e.target.result
         const data = csvToArray(text)
-        console.log(data)
+        console.table(data)
       }
-      reader.readAsText(input)
+      reader.readAsText(submittedFile)
     })
 
+    function csvToArray(str, delimeter = ",") {
+      const headers = str
+        .slice(0, str.indexOf("\n")) // slice from beginning of row to next row
+        .split(delimeter) // create an array for each value separated by ","
 
-    function csvToArray(str, delimeter =","){
-      const headers = str.slice(0, str.indexOf("\n")).split(delimeter)
-      const rows = str.slice(str.indexOf("\n") + 1).split("\n")
-      
+      const rows = str
+        .slice(str.indexOf("\n") + 1) // slice from (new line + 1) until next one
+        .split("\n") // create an array for each value separated by ","
+
       const array = rows.map(row => {
-        const values = row.split(delimeter)
-        const element = headers.reduce((object, header, index) => {
+        const values = row.split(delimeter) // each row is added into own array
+        const elements = headers.reduce((object, header, index) => {
           object[header] = values[index]
-          return object
+          return object // headers added to objects
         }, {})
-        return element
+        return elements
       })
       return array
     }
-
-
   </script>
-  <style>
-    body{
-      display:flex;
-      justify-content: center;
-    }
-    input{
-      font-size: larger;
-    }
-  </style>
 </body>
