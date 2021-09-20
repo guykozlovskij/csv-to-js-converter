@@ -29,7 +29,7 @@
       reader.onload = (e) => {
         const text = e.target.result
         const data = csvToArray(text)
-        console.table(data)
+        console.log(data)
       }
       reader.readAsText(submittedFile)
     })
