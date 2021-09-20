@@ -46,8 +46,8 @@
       const array = rows.map(row => {
         const values = row.split(delimeter) // each row is added into own array
         const elements = headers.reduce((object, header, index) => {
-          object[header] = values[index]
-          return object // headers added to objects
+          object[header] = values[index] // value gets assigned to a header object
+          return object 
         }, {})
         return elements
       })
